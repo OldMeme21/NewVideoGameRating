@@ -41,7 +41,7 @@ async function runExample() {
    let predictions = document.getElementById('predictions');
 
    let ratings = ["E", "ET", "T", "M"];
-   let ratingIndex = Math.round(outputData.data[0]);
+   let ratingIndex = outputData.data[0];
 
 predictions.innerHTML = ` <hr> Game Rating Prediction: <br/>
    <table>
