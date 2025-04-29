@@ -28,18 +28,33 @@ async function runExample() {
     x.push(parseFloat(document.getElementById('sexual_content').value));
     x.push(parseFloat(document.getElementById('sexual_themes').value));
 
+    // Debug: Check if the inputs are collected correctly
+    console.log('Collected input data:', x);
+
     // Convert the input values to a tensor
     let tensorX = new onnx.Tensor(new Float32Array(x), 'float32', [1, 24]);
 
+    // Debug: Log the tensor shape and data
+    console.log('Tensor data:', tensorX);
+    
     // Load the ONNX model
     let session = new onnx.InferenceSession();
     await session.loadModel("./esrb_classifier.onnx");
 
+    // Debug: Ensure the model is loaded
+    console.log('Model loaded successfully.');
+
     // Run the inference with the correct input name
     let outputMap = await session.run({ input: tensorX });
 
+    // Debug: Log the output data
+    console.log('Model output data:', outputMap);
+
     // Extract the output data from the model
     let outputData = outputMap.values().next().value;
+
+    // Check the structure of the output data
+    console.log('Output data:', outputData);
 
     let predictions = document.getElementById('predictions');
 
@@ -66,4 +81,5 @@ async function runExample() {
             </tr>
         </table>`;
 }
+
 
