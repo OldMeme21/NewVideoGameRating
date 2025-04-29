@@ -34,7 +34,7 @@ async function runExample() {
 
     let session = new onnx.InferenceSession();
 
-    await session.loadModel("./DLnet_gamerating.onnx");
+    await session.loadModel("./esrb_classifier.onnx");
     let outputMap = await session.run([tensorX]);
     let outputData = outputMap.get('output1');
 
