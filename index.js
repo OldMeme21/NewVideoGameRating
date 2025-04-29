@@ -1,6 +1,5 @@
 
 async function runExample() {
-
     let x = [];
 
     // Collect and parse input values
@@ -29,21 +28,25 @@ async function runExample() {
     x.push(parseFloat(document.getElementById('sexual_content').value));
     x.push(parseFloat(document.getElementById('sexual_themes').value));
 
+    // Convert the input values to a tensor
     let tensorX = new onnx.Tensor(new Float32Array(x), 'float32', [1, 24]);
 
+    // Load the ONNX model
     let session = new onnx.InferenceSession();
     await session.loadModel("./esrb_classifier.onnx");
 
-    // **IMPORTANT**: the input name must match your ONNX model input name.
-    // For now I assume it's "input1" — you can check the real name using Netron or ONNX inspection tools.
-    let outputMap = await session.run({ input1: tensorX });
+    // Run the inference with the correct input name
+    let outputMap = await session.run({ input: tensorX });
+
+    // Extract the output data from the model
     let outputData = outputMap.values().next().value;
 
     let predictions = document.getElementById('predictions');
 
+    // Define the possible ratings
     let ratings = ["E", "ET", "T", "M"];
 
-    // **Assume** the model outputs probabilities/scores
+    // Find the highest score in the output data
     let maxScore = -Infinity;
     let ratingIndex = -1;
     for (let i = 0; i < outputData.data.length; i++) {
@@ -53,6 +56,7 @@ async function runExample() {
         }
     }
 
+    // Display the predicted rating
     predictions.innerHTML = `
         <hr> Game Rating Prediction: <br/>
         <table>
@@ -62,3 +66,4 @@ async function runExample() {
             </tr>
         </table>`;
 }
+
