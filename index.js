@@ -36,7 +36,7 @@ async function runExample() {
 
     await session.loadModel("./esrb_classifier.onnx");
     let outputMap = await session.run([tensorX]);
-    let outputData = outputMap.get('output1');
+    let outputData = outputMap.get('output');
 
    let predictions = document.getElementById('predictions');
 
