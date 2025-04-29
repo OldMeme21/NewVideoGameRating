@@ -41,7 +41,14 @@ async function runExample() {
    let predictions = document.getElementById('predictions');
 
    let ratings = ["E", "ET", "T", "M"];
-   let ratingIndex = outputData.data[0];
+  let maxScore = -Infinity;
+let ratingIndex = -1;
+for (let i = 0; i < outputData.data.length; i++) {
+    if (outputData.data[i] > maxScore) {
+        maxScore = outputData.data[i];
+        ratingIndex = i;
+    }
+}
 
 predictions.innerHTML = ` <hr> Game Rating Prediction: <br/>
    <table>
